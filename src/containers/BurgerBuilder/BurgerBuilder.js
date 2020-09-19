@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Aux from '../../hoc/Auxiliary'
 import Burger from '../../components/Burger/Burger'
 import BuildControls from '../../components/Burger/BuildControls/BuildControls'
+import Modal from '../../components/UI/Modal/Modal'
+import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary'
 
 // we typical used constant which we want to use as global
 // contants in all capital characters
@@ -22,8 +24,9 @@ class BurgerBuilder extends Component {
             meat: 0
         },
         totalPrice: 4,       // Base Price
-        purchaseable: false     // this is for the odernow button 
+        purchaseable: false,     // this is for the odernow button 
         // if false then button will be hidden
+        purchasing: false       // for Order Now
     }
 
     // to update the order button
@@ -98,6 +101,11 @@ class BurgerBuilder extends Component {
 
     }
 
+    // For Order Now
+    purchaseHandler = () => {
+        this.setState({ purchasing: true })
+    }
+
     render() {
 
         const disabledInfo = {
@@ -111,12 +119,16 @@ class BurgerBuilder extends Component {
 
         return (
             <Aux>
+                <Modal show={this.state.purchasing}>
+                    <OrderSummary ingredients={this.state.ingredients}/>
+                </Modal>
                 <Burger ingredients={this.state.ingredients}/>
                 <BuildControls 
                     ingredientAdded={this.addIngredientHandler} 
                     ingredientRemoved={this.removeIngredientHandler}
                     disabled={disabledInfo}
                     purchaseable={this.state.purchaseable}
+                    ordered={this.purchaseHandler}
                     price={this.state.totalPrice}
                     />          
             </Aux>
