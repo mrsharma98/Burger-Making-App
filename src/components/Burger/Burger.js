@@ -25,7 +25,7 @@ const burger = (props) => {
     // for reduce:- takes arr(prev value), el(current value)
     // at the end it also takes a initial value. (here we r passing an empty array.)
 
-    console.log(transformedIngredient);
+    // console.log(transformedIngredient);
 
     if (transformedIngredient.length === 0) {
         transformedIngredient = <p className={classes.p}>Please start adding ingredients!</p>
