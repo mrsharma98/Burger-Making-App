@@ -14,8 +14,9 @@ class Modal extends Component {
         //     return true
         // }
         // can be written as..
-        return nextProps.show !== this.props.show 
+        return nextProps.show !== this.props.show || nextProps.children !== this.props.children 
     }
+    // nextProps.children != this.props.children --> for the spinner
 
     componentWillUpdate() {
         console.log('[Modal] WillUpdate');
