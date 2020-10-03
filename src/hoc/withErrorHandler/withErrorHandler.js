@@ -11,17 +11,24 @@ const withErrorHandler = (WrappedComponent, axios) => {
         // componentDidMount is great for the post req but for handling post
         // as well as get, we should use componentWillMount
         componentWillMount () {
-            axios.interceptors.request.use(req => {
+            this.reqInterceptor = axios.interceptors.request.use(req => {
                 this.setState({ error: null })
                 return req
             })
-            axios.interceptors.response.use(res => res, error => {
+            this.resInterceptor = axios.interceptors.response.use(res => res, error => {
                 this.setState({ error: error })
             })
         }
 
         errorConfirmedHandler = () => {
             this.setState({ error: null })
+        }
+
+        componentWillUnmount() {
+            // console.log('Will Unmount', this.reqInterceptor, this.resInterceptor);
+            axios.interceptors.request.eject(this.reqInterceptor)
+            axios.interceptors.request.eject(this.resInterceptor)
+            
         }
 
         render() {
