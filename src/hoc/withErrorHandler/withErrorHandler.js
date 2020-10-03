@@ -8,7 +8,9 @@ const withErrorHandler = (WrappedComponent, axios) => {
             error: null
         }
 
-        componentDidMount () {
+        // componentDidMount is great for the post req but for handling post
+        // as well as get, we should use componentWillMount
+        componentWillMount () {
             axios.interceptors.request.use(req => {
                 this.setState({ error: null })
                 return req
