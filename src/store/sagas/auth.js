@@ -1,16 +1,23 @@
 // Sagas are related to actions
 // * turns a function to a generator
 // import { delay } from 'redux-saga'
-import { put, delay } from 'redux-saga/effects'
+import { put, delay, call } from 'redux-saga/effects'
 // put just dispatches a new action, same as returning.
+// call -> allows us to call some function on some object
 import * as actions from '../actions/index'
 import axios from 'axios'
 
 
 export function* logoutSaga (action) {
-    yield localStorage.removeItem('token')
-    yield localStorage.removeItem('expirationDate')
-    yield localStorage.removeItem('userId')
+    // yield localStorage.removeItem('token')
+    // above line in the call format
+    // call([object, function], parameters)
+    yield call([localStorage, 'removeItem'], "token")
+    yield call([localStorage, 'removeItem'], "expirationDate")
+    yield call([localStorage, 'removeItem'], "userId")
+
+    // yield localStorage.removeItem('expirationDate')
+    // yield localStorage.removeItem('userId')
     // it says that each yield waits for previous one to get finished.
 
     yield put(actions.logoutSucceed())
@@ -47,9 +54,11 @@ export function* authUserSaga (action) {
         // console.log(response);
         const expirationDate = yield new Date(new Date().getTime() + response.data.expiresIn * 1000)
 
+        
         yield localStorage.setItem('token', response.data.idToken);
         yield localStorage.setItem('expirationDate', expirationDate)
         yield localStorage.setItem('userId', response.data.localId)
+
 
         yield put(actions.authSuccess(response.data.idToken, response.data.localId))
         yield put(actions.checkAuthTimeout(response.data.expiresIn))  
